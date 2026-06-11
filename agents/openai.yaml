@@ -1,0 +1,3 @@
+display_name: 爆款文章分析
+short_description: 抓取公众号爆款数据并分析写作风格和原因。
+default_prompt: 抓取 AI Agent 赛道最近 7 天公众号爆款文章，分析阅读量、写作风格、爆款原因和写作参考。
