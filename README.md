@@ -1,10 +1,19 @@
-# Creator Buddy
+<h1 align="center">Creator Buddy</h1>
 
-`creator-buddy.skill`
+<p align="center"><code>creator-buddy.skill</code></p>
 
-「你想追的下一个热点，何必靠刷信息流」
+<p align="center"><em>「你想追的下一个热点，何必靠刷信息流」</em></p>
 
-License: MIT · Agent Skills · Multi-Runtime
+<p align="center">
+  <img alt="License MIT" src="https://img.shields.io/badge/License-MIT-c8a500?style=for-the-badge">
+  <img alt="Agent Skills Standard" src="https://img.shields.io/badge/Agent%20Skills-Standard-5aa524?style=for-the-badge">
+  <img alt="skills.sh Compatible" src="https://img.shields.io/badge/skills.sh-Compatible-1888c8?style=for-the-badge">
+  <img alt="Runtime" src="https://img.shields.io/badge/Runtime-Claude%20Code%20%C2%B7%20Codex%20%C2%B7%20Cursor%20%C2%B7%20OpenClaw%20%C2%B7%20Hermes-7b2bd9?style=for-the-badge">
+</p>
+
+<p align="center">
+  公众号 / 小红书 / B站 / 知乎：<strong>空格的键盘</strong> ｜ <a href="mailto:wzfh520@gmail.com">wzfh520@gmail.com</a>
+</p>
 
 Creator Buddy 是一套给内容创作者、运营、增长和自媒体作者用的运营情报 Skill 集合。
 
