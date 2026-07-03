@@ -1,122 +1,122 @@
 ---
-name: xiaohongshu-content-tools
-description: 小红书运营数据工具｜当提到小红书关键词搜索,小红书笔记详情及评论,小红书博主作品时使用，可实现爆款挖掘/竞品分析/KOL筛选/趋势洞察，用数据驱动小红书流量增长，告别盲目创作
+name: social-content-reach-tools
+description: 多平台内容运营数据工具｜当提到小红书/B站/抖音关键词搜索、笔记/视频详情、评论、博主/UP主作品监控时使用。基于 Agent Reach / OpenCLI / bili-cli / 公开只读接口访问，不再要求第三方 API key。
 license: MIT
 metadata:
   type: command
   runtime: "nodejs@16.14.0+"
-  version: "1.0.5"
+  version: "2.0.0"
   requires:
     bins:
       - "node"
-    env:
-      - "GUAIKEI_API_TOKEN"
-  env_desc:
-    GUAIKEI_API_TOKEN: "小红书数据API访问令牌（必填），可通过 www.guaikei.com 开通获取"
+      - "agent-reach"
   category:
     - "Data&APIs"
     - "内容创作"
   tags:
     - "小红书"
-    - "小红书数据工具"
-    - "小红书关键词搜索"
-    - "小红书笔记详情查询"
-    - "小红书评论分析"
-    - "小红书爆款挖掘"
-    - "小红书竞品监控"
-    - "小红书趋势洞察"
-    - "小红书KOL筛选"
-    - "小红书运营"
-    - "小红书内容创作"
-    - "小红书营销"
-    - "小红书数据爬虫"
-    - "小红书互动数据统计"
-    - "小红书热点监控"
+    - "B站"
+    - "抖音"
+    - "Agent Reach"
+    - "内容搜索"
+    - "评论分析"
+    - "竞品监控"
+    - "趋势洞察"
+    - "KOL筛选"
   examples:
-    - "搜索'露营装备'的热门小红书笔记: node src/xiaohongshu/search-cli.js --keyword '露营装备' --type 1 --sort 2 --limit 10"
-    - "分析这篇小红书笔记的评论区情绪: node src/xiaohongshu/detail-cli.js --url 'https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy' --limit 100"
-    - "监控小红书博主的最新作品: node src/xiaohongshu/post-cli.js --url 'https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy' --limit 20"
-    - "监控小红书'夏季穿搭'关键词(最新排序+图文类型): node src/xiaohongshu/search-cli.js --keyword '夏季穿搭' --type 2 --sort 1"
+    - "搜索小红书'露营装备': node src/xiaohongshu/search-cli.js --platform xiaohongshu --keyword '露营装备' --limit 10"
+    - "搜索B站'AI编程': node src/xiaohongshu/search-cli.js --platform bilibili --keyword 'AI编程' --limit 10"
+    - "分析小红书笔记详情及评论: node src/xiaohongshu/detail-cli.js --platform xiaohongshu --url 'https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy' --limit 100"
+    - "监控小红书博主作品: node src/xiaohongshu/post-cli.js --platform xiaohongshu --url 'https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy' --limit 20"
 ---
 
-# 📊 小红书洞察与竞品分析助手
+# 多平台内容洞察与竞品分析助手
 
-> **一句话价值主张**：一款专业的小红书数据分析工具，通过挖掘爆款笔记、监控竞品动态、筛选高价值KOL，帮助你实现小红书账号的快速增长与精准营销。
+> 一句话价值主张：用 Agent Reach 的本地平台后端替代专用 API key，把小红书、B站和可扩展的抖音内容抓取统一到一套内容运营 CLI。
 
 ## 1. 技能概述
 
-这是一款专注于**小红书数据挖掘**的工具。它能够穿透小红书的公开数据层，为你提供深度的**竞品监控**、**趋势预测**和**KOL 筛选**服务。无论你是内容创作者、品牌营销人员还是市场分析师，都能通过此工具获取决策支持。
+这个 Skill 原本依赖 `GUAIKEI_API_TOKEN`，现在改为优先使用 Agent Reach 生态中的只读后端：
 
-**🔥核心优势**
+- 小红书：`opencli xiaohongshu`、`xiaohongshu-mcp` 或 `xhs-cli`
+- B站：`bili-cli`、`opencli bilibili` 或 B站公开搜索/详情 API
+- 抖音：Agent Reach 当前未内置 channel，预留 `DOUYIN_COMMAND` 自定义只读 CLI 适配
 
-> - 轻量: 无需部署服务，Node.js 一键运行
-> - 安全: 无需登录你的小红书账号，不担心风控风险 / 封号问题
-> - 灵活: 支持多维度筛选、批量操作、多格式导出
-> - 实用: 日志自动归档，适配营销报告 / 内容策划场景
+## 2. 核心能力
 
-**🎯 核心能力**
+| 使用场景 | 具体价值 |
+| --- | --- |
+| 内容创作选题 | 输入关键词，跨平台搜索热门内容，快速找到选题方向 |
+| 竞品监控 | 输入创作者主页链接，查看公开作品与内容方向 |
+| 评论/详情分析 | 读取笔记或视频详情，必要时抓取评论 |
+| 趋势洞察 | 用同一个命令比较小红书、B站、抖音的内容分布 |
 
-| 使用场景        | 具体价值                                                      |
-| --------------- | ------------------------------------------------------------- |
-| 🔍 内容创作选题 | 输入关键词，筛选「最多点赞」笔记，快速找到爆款选题方向        |
-| 🕵️ 品牌竞品监控 | 输入竞品账号链接，分析其互动数据、内容风格，制定差异化策略    |
-| 👥 KOL筛选      | 解析KOL笔记的真实互动率（点赞/评论/收藏），避免数据造假的博主 |
-| 📈 市场趋势分析 | 定时监控关键词「最新排序」，捕捉小红书热点风向，提前布局内容  |
+## 3. 快速使用
 
-**✨ 适用人群**
-
-✅ 小红书内容创作者/运营 | ✅ 品牌营销/市场人员 | ✅ 数据分析师 | ✅ MCN机构/博主经纪人
-
-## 2. 🚀 快速使用
-
-### 2.1 小红书关键词搜索
+### 3.1 小红书关键词搜索
 
 ```bash
-node src/xiaohongshu/search-cli.js --keyword "夏季穿搭"
+node src/xiaohongshu/search-cli.js --platform xiaohongshu --keyword "夏季穿搭" --limit 10
 ```
 
-### 2.2 小红书笔记详情及评论分析
+### 3.2 小红书笔记详情及评论
 
 ```bash
-node src/xiaohongshu/detail-cli.js --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" --limit 100
+node src/xiaohongshu/detail-cli.js \
+  --platform xiaohongshu \
+  --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" \
+  --limit 100
 ```
 
-### 2.3 小红书博主作品监控
+### 3.3 小红书博主作品
 
 ```bash
-node src/xiaohongshu/post-cli.js --url "https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy" --limit 20
+node src/xiaohongshu/post-cli.js \
+  --platform xiaohongshu \
+  --url "https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy" \
+  --limit 20
 ```
 
-**💡 详细选项说明**， 可参阅 [完整选项说明](references/options.md)
+### 3.4 B站搜索与视频详情
 
-## 3. 📌 使用场景
+```bash
+node src/xiaohongshu/search-cli.js --platform bilibili --keyword "AI编程" --limit 10
+node src/xiaohongshu/detail-cli.js --platform bilibili --url "BVxxxx"
+```
 
-- 需要做内容选题 → 关键词搜索 + 点赞排序
-- 需要模仿爆款文案 → 查看高赞图文笔记详情
-- 需要监控竞品账号 → 批量抓取对方作品
-- 需要分析评论区情绪 → 查看笔记的评论内容及互动数据
-- 需要快速追热点 → 实时获取小红书热门笔记
+### 3.5 抖音扩展入口
 
-## 4. ⚠️ 重要限制
+Agent Reach 当前版本没有抖音 channel。若你有本地只读 CLI，可以这样接入：
 
-- 仅抓取小红书公开数据，不支持私密 / 隐藏内容
-- 需要配置 GUAIKEI_API_TOKEN 才能正常运行
-- 数据仅限个人 / 团队内部使用，禁止违规分发
-- 本工具无需登录小红书账号，不涉及用户隐私数据的获取
+```bash
+export DOUYIN_COMMAND="/path/to/douyin-readonly-cli"
+node src/xiaohongshu/search-cli.js --platform douyin --keyword "AI工具"
+```
 
-## 5. ❓ 技术说明
+该 CLI 需支持：
 
-### 5.1 运行环境兼容说明
+```bash
+$DOUYIN_COMMAND search <keyword> --limit <n>
+$DOUYIN_COMMAND detail <url-or-id>
+$DOUYIN_COMMAND user <user-url-or-id> --limit <n>
+```
 
-- 系统兼容：Windows/Linux/MacOS（无需额外依赖，仅需Node.js）
-- Node.js版本：推荐16.14.0+
-- 网络要求：需能正常访问网络，国内服务器无需代理
-- 权限要求：无需管理员权限，普通用户即可运行
+## 4. 后端检查
 
-### 5.2 日志说明
+使用前建议运行：
 
-- 启动时会打印工具Banner，方便确认是否正确执行；
-- 过程中会输出彩色日志，用于反馈技能执行情况，过程中无需用户交互；
-- 所有任务结果会自动保存到 `logs/` 目录（按时间+关键词/链接命名）。
+```bash
+agent-reach doctor --json
+```
 
-> 版本更新日志，请参阅 [changelog.md](references/changelog.md)
+如果小红书显示 `active_backend: null`，请安装 OpenCLI 渠道并在 Chrome 登录小红书，或配置 `xiaohongshu-mcp`。
+
+## 5. 重要限制
+
+- 本工具只读公开数据，不支持发帖、评论、点赞等写操作。
+- 小红书受 `xsec_token` 机制限制，详情页建议使用搜索结果返回的完整 URL。
+- B站公开 API 不保证所有详情字段稳定；安装 `bili-cli` 后能力更完整。
+- 抖音当前是扩展位，不随仓库内置可用后端。
+- 所有任务结果会自动保存到 `logs/`，该目录默认不提交。
+
+更多选项见 [完整选项说明](references/options.md)。

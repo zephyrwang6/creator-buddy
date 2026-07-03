@@ -9,7 +9,7 @@ This repository bundles several Codex/OpenAI-style skills that help creators and
 | Skill | Purpose | Main artifact |
 | --- | --- | --- |
 | `xhs-hotnotes` | Search Xiaohongshu/RedNote hot notes by keyword and rank them by relevance, popularity, and recency. | HTML report + JSON output |
-| `xiaohongshu-content-tools` | Analyze Xiaohongshu note details, comments, creator posts, and keyword results through the Guaikei API. | JSON/Markdown output + local logs |
+| `xiaohongshu-content-tools` | Analyze Xiaohongshu, Bilibili, and extensible Douyin content through Agent Reach / local read-only backends. | JSON/raw output + local logs |
 | `gzh-explosive-content-detector` | Search WeChat Official Account explosive articles by keyword. | HTML report |
 | `baokuan-article-analysis` | Analyze hot WeChat articles by sector, merge keyword groups, deduplicate results, and generate a visual report. | HTML report + `data.json` |
 
@@ -44,23 +44,23 @@ python3 skills/gzh-explosive-content-detector/scripts/fetch_gzh_trends.py \
   --start-date 2026-06-23
 ```
 
-### Xiaohongshu content analysis
+### Multi-platform social content analysis
 
 ```bash
-export GUAIKEI_API_TOKEN="your_api_token_here"
-
 node skills/xiaohongshu-content-tools/src/xiaohongshu/search-cli.js \
+  --platform xiaohongshu \
   --keyword "夏季穿搭" \
-  --sort 2 \
   --limit 20
 
 node skills/xiaohongshu-content-tools/src/xiaohongshu/detail-cli.js \
+  --platform xiaohongshu \
   --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" \
   --limit 100
 
-node skills/xiaohongshu-content-tools/src/xiaohongshu/post-cli.js \
-  --url "https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy" \
-  --limit 20
+node skills/xiaohongshu-content-tools/src/xiaohongshu/search-cli.js \
+  --platform bilibili \
+  --keyword "AI编程" \
+  --limit 10
 ```
 
 ### WeChat sector analysis
@@ -74,6 +74,6 @@ python3 skills/baokuan-article-analysis/scripts/daily_sector_trends.py \
 
 ## Notes
 
-- Runtime API keys must be supplied through environment variables. Do not commit local keys, cookies, raw platform tokens, or generated logs.
+- Runtime API keys, if a specific skill requires them, must be supplied through environment variables. Do not commit local keys, cookies, raw platform tokens, or generated logs.
 - Generated reports and local caches are ignored by default.
 - Public platform data belongs to the original authors and platforms. Use this repository for research, analysis, and content planning.

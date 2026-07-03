@@ -5,7 +5,7 @@
 function printBanner() {
   console.log("╔════════════════════════════════════════════╗");
   console.log("║                                            ║");
-  console.log("║       📕 小红书运营全链路数据工具           ║");
+  console.log("║       📕 多平台内容运营数据工具             ║");
   console.log("║                                            ║");
   console.log("╚════════════════════════════════════════════╝");
   console.log("");

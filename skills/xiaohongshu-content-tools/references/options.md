@@ -1,55 +1,110 @@
 # 技能完整选项说明
 
-## 1. 小红书关键词搜索
+## 1. 跨平台关键词搜索
 
 ```bash
-# 基础语法
 node src/xiaohongshu/search-cli.js <关键词> [选项]
-
-# 完整选项说明
---keyword -k <关键词>: 搜索关键词（必填，2-50个汉字，避免特殊符号）
---type -t <0/1/2>: 内容类型，0-全部（默认），1-视频，2-图文
---sort -s <0-4>: 排序规则，0-综合（默认），1-最新，2-最多点赞，3-最多评论，4-最多收藏
---time -i <0-3>: 发布时间，0-全部（默认），1-一天内，2-一周内，3-半年内
---limit -l <1-10000>: 搜索数量，1-100000（默认20）
---output -o <json/markdown>: 输出格式（默认json）
---help -h: 显示帮助信息
-
-# 示例
-node src/xiaohongshu/search-cli.js "露营装备" --sort 2 --limit 20
-node src/xiaohongshu/search-cli.js --keyword "早春穿搭" --type 2 --output markdown
 ```
 
-## 2. 小红书笔记详情查询
+| 选项 | 说明 |
+| --- | --- |
+| `--platform -p` | 平台：`xiaohongshu` / `bilibili` / `douyin`，默认 `xiaohongshu` |
+| `--keyword -k` | 搜索关键词 |
+| `--limit -l` | 搜索数量，默认 20 |
+| `--output -o` | 输出格式：`json` / `raw`，默认 `json` |
+| `--type -t` | 兼容旧参数，部分平台忽略 |
+| `--sort -s` | 兼容旧参数，部分平台忽略 |
+| `--time -i` | 兼容旧参数，部分平台忽略 |
+
+示例：
 
 ```bash
-# 基础语法
-node src/xiaohongshu/detail-cli.js <小红书笔记链接> [选项]
-
-# 选项说明
---url -u <小红书笔记链接>: 小红书笔记链接（支持https://www.xiaohongshu.com/explore/xxx 或 http://xhslink.com/m/xxx）
---limit -l <1-10000>: 评论数量限制，1-10000（默认6）
---help -h: 显示帮助信息
-
-# 链接格式要求
-1. 完整链接：必须包含 xsec_token 参数（如 https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy）
-2. 短链接：https://xhslink.com/m/xxx（自动兼容，无需手动解析）
-❌ 错误：链接含空格、无xsec_token的完整链接会直接报错
-
-# 示例
-node src/xiaohongshu/detail-cli.js "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy"
-node src/xiaohongshu/detail-cli.js --url "http://xhslink.com/m/xxx"
+node src/xiaohongshu/search-cli.js --platform xiaohongshu --keyword "露营装备" --limit 20
+node src/xiaohongshu/search-cli.js --platform bilibili --keyword "AI编程" --limit 10
+node src/xiaohongshu/search-cli.js --platform douyin --keyword "AI工具"
 ```
 
-## 3. 小红书博主已发布作品查询
+## 2. 详情与评论
 
 ```bash
-# 基础语法
-node src/xiaohongshu/post-cli.js <小红书博主链接> [选项]
+node src/xiaohongshu/detail-cli.js <链接或ID> [选项]
+```
 
-# 选项说明
---url -u <小红书博主链接>: 小红书博主主页链接（支持https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy 或 http://xhslink.com/m/xxx）
---limit -l <1-10000>: 主页笔记数量（默认 0, 最大 10000）
---help -h: 显示帮助信息
+| 选项 | 说明 |
+| --- | --- |
+| `--platform -p` | 平台：`xiaohongshu` / `bilibili` / `douyin`，默认 `xiaohongshu` |
+| `--url -u` | 笔记/视频链接或 ID |
+| `--limit -l` | 评论数量，部分后端支持，默认 0 |
+| `--output -o` | 输出格式：`json` / `raw`，默认 `json` |
 
+示例：
+
+```bash
+node src/xiaohongshu/detail-cli.js \
+  --platform xiaohongshu \
+  --url "https://www.xiaohongshu.com/explore/xxx?xsec_token=yyy" \
+  --limit 100
+
+node src/xiaohongshu/detail-cli.js --platform bilibili --url "BVxxxx"
+```
+
+## 3. 创作者作品
+
+```bash
+node src/xiaohongshu/post-cli.js <主页链接或ID> [选项]
+```
+
+| 选项 | 说明 |
+| --- | --- |
+| `--platform -p` | 平台：`xiaohongshu` / `bilibili` / `douyin`，默认 `xiaohongshu` |
+| `--url -u` | 创作者主页链接或 ID |
+| `--limit -l` | 作品数量，默认 20 |
+| `--output -o` | 输出格式：`json` / `raw`，默认 `json` |
+
+示例：
+
+```bash
+node src/xiaohongshu/post-cli.js \
+  --platform xiaohongshu \
+  --url "https://www.xiaohongshu.com/user/profile/xxx?xsec_token=yyy" \
+  --limit 20
+
+node src/xiaohongshu/post-cli.js \
+  --platform bilibili \
+  --url "https://space.bilibili.com/123456" \
+  --limit 20
+```
+
+## 4. 后端说明
+
+### 小红书
+
+按 `agent-reach doctor --json` 的 `xiaohongshu.active_backend` 自动选择：
+
+- `OpenCLI`：`opencli xiaohongshu ...`
+- `xiaohongshu-mcp`：`mcporter call 'xiaohongshu....'`
+- `xhs-cli`：`xhs ...`
+
+### B站
+
+优先级：
+
+1. `bili-cli`
+2. `opencli bilibili`
+3. B站公开搜索/详情 API
+
+### 抖音
+
+Agent Reach 当前没有抖音后端。可设置：
+
+```bash
+export DOUYIN_COMMAND="/path/to/douyin-readonly-cli"
+```
+
+自定义 CLI 需支持：
+
+```bash
+$DOUYIN_COMMAND search <keyword> --limit <n>
+$DOUYIN_COMMAND detail <url-or-id>
+$DOUYIN_COMMAND user <user-url-or-id> --limit <n>
 ```
